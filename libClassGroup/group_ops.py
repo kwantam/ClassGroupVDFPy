@@ -2,7 +2,6 @@
 #
 # (C) 2018 Dan Boneh, Riad S. Wahby <rsw@cs.stanford.edu>
 
-import itertools
 import sys
 
 from libClassGroup.group_mixins import _WnafMixin
@@ -11,19 +10,16 @@ import libClassGroup.util as lutil
 
 # python 2/3 hack
 if sys.version_info[0] == 2:
-    zip = itertools.izip    # pylint: disable=redefined-builtin,no-member
     range = xrange          # pylint: disable=redefined-builtin,undefined-variable
 
 class ClassGroupOps(_WnafMixin):
-    def __init__(self, Gdesc):
-        self.D = Gdesc.disc
+    def __init__(self, desc):
+        self.D = desc.disc
+        self.g = desc.g
+        self.id = desc.id
+        self.L = desc.L
         assert self.D < 0 and self.D % 4 == 1 and lprimes.is_prime(-self.D)
-        self.g = Gdesc.g
-        self.h = Gdesc.h
-        self.id = Gdesc.id
-        self.L = Gdesc.L
         assert self.L ** 4 <= -self.D and (self.L + 1) ** 4 > -self.D
-        self.desc = (self.D, self.g, self.h)
 
     # Algorithm 5.4.2 of Cohen's "A Course in Computational Algebraic Number Theory"
     @staticmethod
